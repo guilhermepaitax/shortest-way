@@ -13,22 +13,56 @@ namespace GrafoCoyote.Controllers
     {
         private string[] terrainTypes = new string[5] { "asphalt", "grass", "sand", "water", "pedra" };
 
-        public List<Vertex> GenerateTerrain(int wid, int hgt, int cellSize, int Ymin, int Xmin)
+        public Vertex[,] GenerateTerrain(int wid, int hgt, int cellSize, int Ymin, int Xmin)
         {
-            List<Vertex> vertices = new List<Vertex>();
+            Vertex[,] vertices = new Vertex[hgt, wid];
 
-            for (int i = 0; i < hgt; i++)
+            for (int i = 0; i < hgt; ++i)
             {
                 int y = Ymin + cellSize * i;
-                for (int j = 0; j < wid; j++)
+                for (int j = 0; j < wid; ++j)
                 {
                     int x = Xmin + cellSize * j;
                     string type;
                     if (i == 0 && j == 0) type = "coyote";
                     else if (i == hgt - 1 && j == wid - 1) type = "papaleguas";
                     else type = RandonTarrainType();
-                    Vertex vertex = new Vertex(x, y, cellSize, type);
-                    vertices.Add(vertex);
+                    vertices[i, j] = new Vertex(x, y, cellSize, type);
+                }
+            }
+
+            // Inicialize os neighbors dos nós.
+            for (int i = 0; i < hgt; ++i)
+            {
+                for (int j = 0; j < wid; ++j)
+                {
+                    if (i > 0 && vertices[i - 1, j].terrainType != "pedra")
+                    {
+                        int cost = Array.IndexOf(terrainTypes, vertices[i - 1, j].terrainType);
+                        Connections con = new Connections(cost + 1, vertices[i - 1, j]);
+                        vertices[i, j].connections.Add(con);
+                    }
+
+                    if (i < hgt - 1 && vertices[i + 1, j].terrainType != "pedra")
+                    {
+                        int cost = Array.IndexOf(terrainTypes, vertices[i + 1, j].terrainType);
+                        Connections con = new Connections(cost + 1, vertices[i + 1, j]);
+                        vertices[i, j].connections.Add(con);
+                    }
+                        
+                    if (j > 0 && vertices[i, j - 1].terrainType != "pedra")
+                    {
+                        int cost = Array.IndexOf(terrainTypes, vertices[i, j - 1].terrainType);
+                        Connections con = new Connections(cost + 1, vertices[i, j - 1]);
+                        vertices[i, j].connections.Add(con);
+                    }
+                        
+                    if (j < wid - 1 && vertices[i, j + 1].terrainType != "pedra")
+                    {
+                        int cost = Array.IndexOf(terrainTypes, vertices[i, j + 1].terrainType);
+                        Connections con = new Connections(cost + 1, vertices[i, j + 1]);
+                        vertices[i, j].connections.Add(con);
+                    }
                 }
             }
 
@@ -42,7 +76,7 @@ namespace GrafoCoyote.Controllers
             return terrainTypes[rndNum];
         }
 
-        public Bitmap DisplayTerrain(List<Vertex> vertices, int picWid, int picHgt, int cellSize)
+        public Bitmap DisplayTerrain(Vertex[,] vertices, int picWid, int picHgt, int cellSize)
         {
             Pen pen = new Pen(Brushes.DarkCyan);
             Bitmap bm = new Bitmap(picWid, picHgt);
@@ -51,10 +85,13 @@ namespace GrafoCoyote.Controllers
             {
                 gr.SmoothingMode = SmoothingMode.AntiAlias;
 
-                foreach (Vertex vert in vertices)
+                for (int i = 0; i < vertices.GetLength(0); i++)
                 {
-                    gr.FillRectangle(Brushes.DarkCyan, vert.Bounds);
-                    vert.DrawBlock(gr, pen);
+                    for (int j = 0; j < vertices.GetLength(1); j++)
+                    {
+                        gr.FillRectangle(Brushes.DarkCyan, vertices[i, j].Bounds);
+                        vertices[i, j].DrawBlock(gr, pen);
+                    }
                 }
             }
 

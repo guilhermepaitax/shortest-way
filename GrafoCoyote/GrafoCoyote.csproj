@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\SolverController.cs" />
     <Compile Include="Controllers\TerrainController.cs" />
     <Compile Include="Models\Connections.cs" />
     <Compile Include="Models\Vertex.cs" />

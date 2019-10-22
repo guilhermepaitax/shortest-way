@@ -32,8 +32,8 @@ namespace GrafoCoyote
             Ymin = (picTerrain.ClientSize.Height - hgt * CellSize) / 2;
 
             TerrainController terrainController = new TerrainController();
-            List<Vertex> vertices = terrainController.GenerateTerrain(wid, hgt, CellSize, Ymin, Xmin);
-            picTerrain.Image = terrainController.DisplayTerrain(vertices, picTerrain.ClientSize.Width, picTerrain.ClientSize.Height, CellSize);
+            Vertex[,] grafo = terrainController.GenerateTerrain(wid, hgt, CellSize, Ymin, Xmin);
+            picTerrain.Image = terrainController.DisplayTerrain(grafo, picTerrain.ClientSize.Width, picTerrain.ClientSize.Height, CellSize);
         }
     }
 }

@@ -11,8 +11,9 @@ namespace GrafoCoyote.Models
     class Vertex
     {
         public string terrainType;
-        public List<Connections> connections;
+        public List<Connections> connections = new List<Connections>();
         public Rectangle Bounds;
+        public bool visited;
 
         public Point Center
         {
@@ -27,6 +28,7 @@ namespace GrafoCoyote.Models
         public Vertex(int positionX, int positionY, int size, string terrainType)
         {
             this.terrainType = terrainType;
+            this.visited = false;
             Bounds = new Rectangle(positionX, positionY, size, size);
         }
 
