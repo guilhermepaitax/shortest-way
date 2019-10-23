@@ -16,23 +16,13 @@ namespace GrafoCoyote.Models
         public int minPath;
         public Vertex antecessor;
 
-        public Point Center
-        {
-            get
-            {
-                int x = Bounds.Left + Bounds.Width / 2;
-                int y = Bounds.Top + Bounds.Height / 2;
-                return new Point(x, y);
-            }
-        }
-
         public Vertex(int positionX, int positionY, int size, string terrainType)
         {
             this.terrainType = terrainType;
             Bounds = new Rectangle(positionX, positionY, size, size);
         }
 
-        // Desenhe um círculo no centro do nó.
+        // Desenhe um círculo .
         public void DrawCenter(Graphics gr, Brush brush, int cellSize)
         {
             float size = cellSize / 3;

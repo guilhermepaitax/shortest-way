@@ -11,7 +11,7 @@ namespace GrafoCoyote.Controllers
     class SolverController
     {
         
-        public void Solver(Vertex[,] grafo, Vertex start)
+        public bool Solver(Vertex[,] grafo, Vertex start)
         {
             List<Vertex> unvisited = new List<Vertex>();
             Vertex u;
@@ -27,11 +27,11 @@ namespace GrafoCoyote.Controllers
                     unvisited.Add(grafo[i, j]);
                 }
             }
-
-            while(unvisited.Count > 0)
+            if (unvisited.Count == 0) return false;
+            while (unvisited.Count > 0)
             {
                 u = MenorDist(unvisited);
-                if(u == null) break; // Tratar depois casa não encontre
+                if (u == null) return false;
 
                 unvisited.Remove(u);
 
@@ -48,7 +48,7 @@ namespace GrafoCoyote.Controllers
                     }
                 }
             }
-
+            return true;
         }
 
         private Vertex MenorDist(List<Vertex> unvisited)

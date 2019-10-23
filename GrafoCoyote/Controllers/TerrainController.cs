@@ -14,28 +14,34 @@ namespace GrafoCoyote.Controllers
     {
         private string[] terrainTypes = new string[5] { "asphalt", "grass", "sand", "water", "pedra" };
 
+        public int[] Coyote = new int[2];
+        public int[] Papaleguas = new int[2];
+
         public Vertex[,] GenerateTerrain(int wid, int hgt, int cellSize, int Ymin, int Xmin)
         {
-            Vertex[,] vertices = new Vertex[hgt, wid];
+            Vertex[,] vertices = new Vertex[wid, hgt];
+            Random rnd = new Random((int)DateTime.Now.Ticks & 0x0000FFFF);
+
+            validPosition(wid, hgt);
 
             for (int i = 0; i < hgt; ++i)
             {
                 int y = Ymin + cellSize * i;
                 for (int j = 0; j < wid; ++j)
                 {
+                 
                     int x = Xmin + cellSize * j;
                     string type;
-                    if (i == 0 && j == 0)
+                    if (i == Coyote[0] && j == Coyote[1])
                     {
                         type = "coyote";
                     }
-                    else if (i == hgt - 1 && j == wid - 1)
+                    else if (i == Papaleguas[0] && j == Papaleguas[1])
                     {
                         type = "papaleguas";
                     }
                     else
-                    {
-                        Random rnd = new Random((int)DateTime.Now.Ticks & 0x0000FFFF);
+                    {                     
                         Thread.Sleep(1);
                         type = terrainTypes[rnd.Next(0, 5)];
                     }
@@ -43,7 +49,7 @@ namespace GrafoCoyote.Controllers
                 }
             }
 
-            // Inicialize os neighbors dos nós.
+            // Inicialize os vixinhos dos nós.
             for (int i = 0; i < hgt; ++i)
             {
                 for (int j = 0; j < wid; ++j)
@@ -96,6 +102,24 @@ namespace GrafoCoyote.Controllers
             return vertices;
         }
 
+        private void validPosition(int wid, int hgt)
+        {
+            int[] p = new int[2];
+            int[] c = new int[2];
+            Random rnd = new Random((int)DateTime.Now.Ticks & 0x0000FFFF);
+            c[0] = rnd.Next(0, wid);
+            c[1] = rnd.Next(0, hgt);
+            p[0] = rnd.Next(0, wid);
+            p[1] = rnd.Next(0, hgt);
+
+            if (c[0] != p[0] && c[1] != p[1])
+            {
+                Papaleguas = p;
+                Coyote = c;
+            }
+            else validPosition(wid, hgt);
+        }
+
         public Bitmap DisplayTerrain(Vertex[,] vertices, int picWid, int picHgt, int cellSize)
         {
             Pen pen = new Pen(Brushes.DarkCyan);
@@ -109,7 +133,7 @@ namespace GrafoCoyote.Controllers
                 {
                     for (int j = 0; j < vertices.GetLength(1); j++)
                     {
-                        gr.FillRectangle(Brushes.DarkCyan, vertices[i, j].Bounds);
+                     //   gr.FillRectangle(Brushes.DarkCyan, vertices[i, j].Bounds);
                         vertices[i, j].DrawBlock(gr, pen);
                     }
                 }
