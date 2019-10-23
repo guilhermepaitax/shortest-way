@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.panelHeader = new System.Windows.Forms.Panel();
+            this.btnSolve = new System.Windows.Forms.Button();
             this.btnCriar = new System.Windows.Forms.Button();
             this.numTamanhoBlc = new System.Windows.Forms.NumericUpDown();
             this.label8 = new System.Windows.Forms.Label();
@@ -55,6 +56,7 @@
             this.pictureBox45 = new System.Windows.Forms.PictureBox();
             this.pictureBox46 = new System.Windows.Forms.PictureBox();
             this.picTerrain = new System.Windows.Forms.PictureBox();
+            this.lblCost = new System.Windows.Forms.Label();
             this.panelHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numTamanhoBlc)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numAltura)).BeginInit();
@@ -75,6 +77,8 @@
             // panelHeader
             // 
             this.panelHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(49)))), ((int)(((byte)(54)))));
+            this.panelHeader.Controls.Add(this.lblCost);
+            this.panelHeader.Controls.Add(this.btnSolve);
             this.panelHeader.Controls.Add(this.btnCriar);
             this.panelHeader.Controls.Add(this.numTamanhoBlc);
             this.panelHeader.Controls.Add(this.label8);
@@ -87,6 +91,22 @@
             this.panelHeader.Name = "panelHeader";
             this.panelHeader.Size = new System.Drawing.Size(1051, 125);
             this.panelHeader.TabIndex = 0;
+            // 
+            // btnSolve
+            // 
+            this.btnSolve.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(169)))), ((int)(((byte)(197)))));
+            this.btnSolve.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSolve.FlatAppearance.BorderSize = 0;
+            this.btnSolve.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSolve.Font = new System.Drawing.Font("Century Gothic", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSolve.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(45)))), ((int)(((byte)(55)))));
+            this.btnSolve.Location = new System.Drawing.Point(542, 55);
+            this.btnSolve.Name = "btnSolve";
+            this.btnSolve.Size = new System.Drawing.Size(272, 36);
+            this.btnSolve.TabIndex = 27;
+            this.btnSolve.Text = "Resolver";
+            this.btnSolve.UseVisualStyleBackColor = false;
+            this.btnSolve.Click += new System.EventHandler(this.btnSolve_Click);
             // 
             // btnCriar
             // 
@@ -301,9 +321,9 @@
             this.label5.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.label5.Location = new System.Drawing.Point(83, 565);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(89, 16);
+            this.label5.Size = new System.Drawing.Size(141, 16);
             this.label5.TabIndex = 46;
-            this.label5.Text = "Papa Léguas";
+            this.label5.Text = "Papa Léguas - Peso 2";
             // 
             // pictureBox41
             // 
@@ -345,9 +365,9 @@
             this.label7.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.label7.Location = new System.Drawing.Point(83, 619);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(51, 16);
+            this.label7.Size = new System.Drawing.Size(103, 16);
             this.label7.TabIndex = 50;
-            this.label7.Text = "Coyote";
+            this.label7.Text = "Coyote - Peso 2";
             // 
             // pictureBox43
             // 
@@ -401,6 +421,18 @@
             this.picTerrain.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.picTerrain.TabIndex = 54;
             this.picTerrain.TabStop = false;
+            // 
+            // lblCost
+            // 
+            this.lblCost.AutoSize = true;
+            this.lblCost.BackColor = System.Drawing.Color.Transparent;
+            this.lblCost.Font = new System.Drawing.Font("Century Gothic", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCost.ForeColor = System.Drawing.Color.White;
+            this.lblCost.Location = new System.Drawing.Point(539, 20);
+            this.lblCost.Name = "lblCost";
+            this.lblCost.Size = new System.Drawing.Size(91, 18);
+            this.lblCost.TabIndex = 28;
+            this.lblCost.Text = "Custo Total:";
             // 
             // FormMain
             // 
@@ -482,6 +514,8 @@
         private System.Windows.Forms.NumericUpDown numLargura;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.PictureBox picTerrain;
+        private System.Windows.Forms.Button btnSolve;
+        private System.Windows.Forms.Label lblCost;
     }
 }
 

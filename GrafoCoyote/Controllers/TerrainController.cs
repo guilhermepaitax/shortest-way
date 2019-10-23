@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace GrafoCoyote.Controllers
@@ -24,9 +25,20 @@ namespace GrafoCoyote.Controllers
                 {
                     int x = Xmin + cellSize * j;
                     string type;
-                    if (i == 0 && j == 0) type = "coyote";
-                    else if (i == hgt - 1 && j == wid - 1) type = "papaleguas";
-                    else type = RandonTarrainType();
+                    if (i == 0 && j == 0)
+                    {
+                        type = "coyote";
+                    }
+                    else if (i == hgt - 1 && j == wid - 1)
+                    {
+                        type = "papaleguas";
+                    }
+                    else
+                    {
+                        Random rnd = new Random((int)DateTime.Now.Ticks & 0x0000FFFF);
+                        Thread.Sleep(1);
+                        type = terrainTypes[rnd.Next(0, 5)];
+                    }
                     vertices[i, j] = new Vertex(x, y, cellSize, type);
                 }
             }
@@ -36,44 +48,52 @@ namespace GrafoCoyote.Controllers
             {
                 for (int j = 0; j < wid; ++j)
                 {
-                    if (i > 0 && vertices[i - 1, j].terrainType != "pedra")
+                    if (vertices[i, j].terrainType != "pedra")
                     {
-                        int cost = Array.IndexOf(terrainTypes, vertices[i - 1, j].terrainType);
-                        Connections con = new Connections(cost + 1, vertices[i - 1, j]);
-                        vertices[i, j].connections.Add(con);
-                    }
+                        if (i > 0 && vertices[i - 1, j].terrainType != "pedra")
+                        {
+                            int cost;
+                            if (vertices[i - 1, j].terrainType == "papaleguas") cost = 1;
+                            else if (vertices[i - 1, j].terrainType == "coyote") cost = 1;
+                            else cost = Array.IndexOf(terrainTypes, vertices[i - 1, j].terrainType);
+                            Connections con = new Connections(cost + 1, vertices[i - 1, j]);
+                            vertices[i, j].connections.Add(con);
+                        }
 
-                    if (i < hgt - 1 && vertices[i + 1, j].terrainType != "pedra")
-                    {
-                        int cost = Array.IndexOf(terrainTypes, vertices[i + 1, j].terrainType);
-                        Connections con = new Connections(cost + 1, vertices[i + 1, j]);
-                        vertices[i, j].connections.Add(con);
-                    }
+                        if (i < hgt - 1 && vertices[i + 1, j].terrainType != "pedra")
+                        {
+                            int cost;
+                            if (vertices[i + 1, j].terrainType == "papaleguas") cost = 1;
+                            else if (vertices[i + 1, j].terrainType == "coyote") cost = 1;
+                            else cost = Array.IndexOf(terrainTypes, vertices[i + 1, j].terrainType);
+                            Connections con = new Connections(cost + 1, vertices[i + 1, j]);
+                            vertices[i, j].connections.Add(con);
+                        }
                         
-                    if (j > 0 && vertices[i, j - 1].terrainType != "pedra")
-                    {
-                        int cost = Array.IndexOf(terrainTypes, vertices[i, j - 1].terrainType);
-                        Connections con = new Connections(cost + 1, vertices[i, j - 1]);
-                        vertices[i, j].connections.Add(con);
-                    }
+                        if (j > 0 && vertices[i, j - 1].terrainType != "pedra")
+                        {
+                            int cost;
+                            if (vertices[i, j - 1].terrainType == "papaleguas") cost = 1;
+                            else if (vertices[i, j - 1].terrainType == "coyote") cost = 1;
+                            else cost = Array.IndexOf(terrainTypes, vertices[i, j - 1].terrainType);
+                            Connections con = new Connections(cost + 1, vertices[i, j - 1]);
+                            vertices[i, j].connections.Add(con);
+                        }
                         
-                    if (j < wid - 1 && vertices[i, j + 1].terrainType != "pedra")
-                    {
-                        int cost = Array.IndexOf(terrainTypes, vertices[i, j + 1].terrainType);
-                        Connections con = new Connections(cost + 1, vertices[i, j + 1]);
-                        vertices[i, j].connections.Add(con);
+                        if (j < wid - 1 && vertices[i, j + 1].terrainType != "pedra")
+                        {
+                            int cost;
+                            if (vertices[i, j + 1].terrainType == "papaleguas") cost = 1;
+                            else if (vertices[i, j + 1].terrainType == "coyote") cost = 1;
+                            else cost = Array.IndexOf(terrainTypes, vertices[i, j + 1].terrainType);
+                            Connections con = new Connections(cost + 1, vertices[i, j + 1]);
+                            vertices[i, j].connections.Add(con);
+                        }
                     }
                 }
             }
 
             return vertices;
-        }
-
-        private string RandonTarrainType()
-        {
-            Random rnd = new Random((int)DateTime.Now.Ticks & 0x0000FFFF);
-            int rndNum = rnd.Next(0, 5);
-            return terrainTypes[rndNum];
         }
 
         public Bitmap DisplayTerrain(Vertex[,] vertices, int picWid, int picHgt, int cellSize)
@@ -98,16 +118,18 @@ namespace GrafoCoyote.Controllers
             return bm;
         }
 
-        public Bitmap DisplayPath(List<Vertex> path, int cellSize, Bitmap image, Brush color)
+        public Bitmap DisplayPath(Vertex end, int cellSize, Bitmap image, Brush color)
         {
             Bitmap bm = image;
 
             using (Graphics gr = Graphics.FromImage(bm))
             {
                 gr.SmoothingMode = SmoothingMode.AntiAlias;
-                foreach (Vertex vertice in path)
+                Vertex current = end;
+                while(current.antecessor != null)
                 {
-                    vertice.DrawCenter(gr, color, cellSize);
+                    current.DrawCenter(gr, color, cellSize);
+                    current = current.antecessor;
                 }
             }
             return bm;

@@ -20,6 +20,20 @@ namespace GrafoCoyote
         }
 
         private int Xmin, Ymin, CellSize;
+        Vertex[,] grafo;
+
+        private void btnSolve_Click(object sender, EventArgs e)
+        {
+            int wid = int.Parse(numLargura.Text);
+            int hgt = int.Parse(numAltura.Text);
+
+            SolverController solverController = new SolverController();
+            solverController.Solver(grafo, grafo[0, 0]);
+            TerrainController terrainController = new TerrainController();
+            Bitmap bitmap = new Bitmap(picTerrain.Image);
+            picTerrain.Image = terrainController.DisplayPath(grafo[wid - 1, hgt - 1], int.Parse(numTamanhoBlc.Text), bitmap, Brushes.MediumSlateBlue);
+            lblCost.Text = "Custo Total: " + grafo[wid - 1, hgt - 1].minPath;
+        }
 
         private void btnCriar_Click(object sender, EventArgs e)
         {
@@ -32,7 +46,7 @@ namespace GrafoCoyote
             Ymin = (picTerrain.ClientSize.Height - hgt * CellSize) / 2;
 
             TerrainController terrainController = new TerrainController();
-            Vertex[,] grafo = terrainController.GenerateTerrain(wid, hgt, CellSize, Ymin, Xmin);
+            grafo = terrainController.GenerateTerrain(wid, hgt, CellSize, Ymin, Xmin);
             picTerrain.Image = terrainController.DisplayTerrain(grafo, picTerrain.ClientSize.Width, picTerrain.ClientSize.Height, CellSize);
         }
     }
