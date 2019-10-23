@@ -109,6 +109,7 @@ namespace GrafoCoyote.Controllers
             Random rnd = new Random((int)DateTime.Now.Ticks & 0x0000FFFF);
             c[0] = rnd.Next(0, wid);
             c[1] = rnd.Next(0, hgt);
+            Thread.Sleep(1);
             p[0] = rnd.Next(0, wid);
             p[1] = rnd.Next(0, hgt);
 
