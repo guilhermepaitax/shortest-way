@@ -29,7 +29,7 @@ namespace GrafoCoyote
                 lblCost.Text = "Custo Total: " + grafo[terrainController.Papaleguas[0], terrainController.Papaleguas[1]].minPath;
             }
             else MessageBox.Show("No Path!");
-       
+        ///
         }
 
         private void btnCriar_Click(object sender, EventArgs e)
