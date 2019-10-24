@@ -24,7 +24,6 @@ namespace GrafoCoyote
             int hgt = int.Parse(numAltura.Text);
             if (solverController.Solver(grafo, grafo[terrainController.Coyote[0], terrainController.Coyote[1]]))
             {
-
                 Bitmap bitmap = new Bitmap(picTerrain.Image);
                 picTerrain.Image = terrainController.DisplayPath(grafo[terrainController.Papaleguas[0], terrainController.Papaleguas[1]], int.Parse(numTamanhoBlc.Text), bitmap, Brushes.MediumSlateBlue);
                 lblCost.Text = "Custo Total: " + grafo[terrainController.Papaleguas[0], terrainController.Papaleguas[1]].minPath;
